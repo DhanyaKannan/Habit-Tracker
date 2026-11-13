@@ -135,7 +135,7 @@ export default function HabitCard({
         activeOpacity={0.7}
       >
         <Ionicons
-          name={isCompleted ? 'checkmark-bold' : 'checkmark'}
+          name="checkmark"
           size={18}
           color={isCompleted ? '#FFFFFF' : 'transparent'}
         />
