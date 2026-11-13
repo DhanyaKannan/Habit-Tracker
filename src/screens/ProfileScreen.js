@@ -26,8 +26,6 @@ export default function ProfileScreen({ navigation }) {
     userProfile,
     updateProfile,
     updateNotificationSetting,
-    exportBackup,
-    importBackup,
     resetAll,
   } = useHabits();
 
@@ -39,8 +37,6 @@ export default function ProfileScreen({ navigation }) {
 
   // Modals state
   const [resetModalVisible, setResetModalVisible] = useState(false);
-  const [isExporting, setIsExporting] = useState(false);
-  const [isImporting, setIsImporting] = useState(false);
 
   const handleSaveProfile = async () => {
     await updateProfile({
@@ -64,37 +60,6 @@ export default function ProfileScreen({ navigation }) {
         'Notification Disabled',
         'Please check device settings to ensure notification permissions are granted.'
       );
-    }
-  };
-
-  const handleExportData = async () => {
-    try {
-      setIsExporting(true);
-      const res = await exportBackup();
-      if (res.note) {
-        Alert.alert('Export Successful', `Data saved locally at: ${res.fileUri}`);
-      }
-    } catch (err) {
-      Alert.alert('Export Failed', err.message || 'Could not export data.');
-    } finally {
-      setIsExporting(false);
-    }
-  };
-
-  const handleImportData = async () => {
-    try {
-      setIsImporting(true);
-      const res = await importBackup();
-      if (res.success) {
-        Alert.alert(
-          'Import Successful',
-          `Successfully restored ${res.count} habits and your entire history!`
-        );
-      }
-    } catch (err) {
-      Alert.alert('Import Failed', err.message || 'Could not restore backup.');
-    } finally {
-      setIsImporting(false);
     }
   };
 
@@ -252,60 +217,6 @@ export default function ProfileScreen({ navigation }) {
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: colors.textSecondary }]}>DATA MANAGEMENT</Text>
           <Card style={styles.cardGroup}>
-            <TouchableOpacity
-              style={styles.actionRow}
-              onPress={handleExportData}
-              activeOpacity={0.7}
-              disabled={isExporting}
-            >
-              <View style={styles.rowLeft}>
-                <Ionicons
-                  name="share-outline"
-                  size={20}
-                  color={colors.lavender}
-                  style={{ marginRight: 12 }}
-                />
-                <View>
-                  <Text style={[styles.itemTitle, { color: colors.textPrimary }]}>
-                    {isExporting ? 'Exporting...' : 'Export Backup (JSON)'}
-                  </Text>
-                  <Text style={[styles.itemSub, { color: colors.textSecondary }]}>
-                    Save or share full habit database
-                  </Text>
-                </View>
-              </View>
-              <Ionicons name="chevron-forward" size={18} color={colors.textMuted} />
-            </TouchableOpacity>
-
-            <View style={[styles.divider, { backgroundColor: colors.borderLight }]} />
-
-            <TouchableOpacity
-              style={styles.actionRow}
-              onPress={handleImportData}
-              activeOpacity={0.7}
-              disabled={isImporting}
-            >
-              <View style={styles.rowLeft}>
-                <Ionicons
-                  name="download-outline"
-                  size={20}
-                  color={colors.sage}
-                  style={{ marginRight: 12 }}
-                />
-                <View>
-                  <Text style={[styles.itemTitle, { color: colors.textPrimary }]}>
-                    {isImporting ? 'Importing...' : 'Import Backup (JSON)'}
-                  </Text>
-                  <Text style={[styles.itemSub, { color: colors.textSecondary }]}>
-                    Restore previously saved HabitFlow data
-                  </Text>
-                </View>
-              </View>
-              <Ionicons name="chevron-forward" size={18} color={colors.textMuted} />
-            </TouchableOpacity>
-
-            <View style={[styles.divider, { backgroundColor: colors.borderLight }]} />
-
             <TouchableOpacity
               style={styles.actionRow}
               onPress={() => setResetModalVisible(true)}
