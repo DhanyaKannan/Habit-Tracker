@@ -6,11 +6,6 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
-    "splash": {
-      "image": "./assets/splash-icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#FAF7F2"
-    },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.habitflow.app"
@@ -43,7 +38,8 @@
           "icon": "./assets/icon.png",
           "color": "#7E69AB"
         }
-      ]
+      ],
+      "expo-font"
     ],
     "extra": {
       "eas": {
