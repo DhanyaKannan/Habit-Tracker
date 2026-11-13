@@ -44,6 +44,12 @@
           "color": "#7E69AB"
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "4487339d-ee46-4a1a-bcd5-64a9d2546282"
+      }
+    },
+    "owner": "dhanyakannan"
   }
 }

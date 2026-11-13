@@ -147,3 +147,4 @@ npx eas-cli build --platform android --profile preview --local
    - Tap **Back** and select **Install**.
 5. Tap **Open** to launch **HabitFlow**.
 6. Switch your phone into **Airplane Mode** and verify that all screens, habit check-ins, calendar history, analytics, theme toggles, and data export work seamlessly offline!
+

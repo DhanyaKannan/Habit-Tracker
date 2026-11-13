@@ -10,7 +10,7 @@ export default function WelcomeScreen({ navigation }) {
 
   const handleGetStarted = async () => {
     await completeOnboarding();
-    // In React Navigation, if user is onboarded, MainTabs will be shown
+    navigation.replace('MainTabs');
   };
 
   const FEATURES = [

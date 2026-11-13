@@ -127,10 +127,11 @@ export default function AppNavigator() {
   }
 
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {!userProfile.hasOnboarded ? (
-        <Stack.Screen name="Welcome" component={WelcomeScreen} />
-      ) : null}
+    <Stack.Navigator
+      initialRouteName={userProfile?.hasOnboarded ? 'MainTabs' : 'Welcome'}
+      screenOptions={{ headerShown: false }}
+    >
+      <Stack.Screen name="Welcome" component={WelcomeScreen} />
       <Stack.Screen name="MainTabs" component={MainTabs} />
       <Stack.Screen
         name="Achievements"
