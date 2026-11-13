@@ -4,9 +4,9 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  SafeAreaView,
   TouchableOpacity,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../context/ThemeContext';
 import { useHabits } from '../context/HabitContext';
@@ -43,7 +43,7 @@ export default function CalendarScreen({ navigation }) {
   const completionsOnSelectedDate = habits.filter((h) => Boolean(selectedDateLogs[h.id])).length;
 
   return (
-    <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]}>
+    <SafeAreaView edges={['top']} style={[styles.safeArea, { backgroundColor: colors.background }]}>
       <Header
         title="Calendar"
         subtitle="Track consistency over time"

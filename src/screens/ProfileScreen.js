@@ -4,13 +4,13 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  SafeAreaView,
   TouchableOpacity,
   TextInput,
   Switch,
   Alert,
   Modal,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../context/ThemeContext';
 import { useHabits } from '../context/HabitContext';
@@ -109,7 +109,7 @@ export default function ProfileScreen({ navigation }) {
   };
 
   return (
-    <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]}>
+    <SafeAreaView edges={['top']} style={[styles.safeArea, { backgroundColor: colors.background }]}>
       <Header
         title="Profile & Settings"
         subtitle="Customization & offline data"

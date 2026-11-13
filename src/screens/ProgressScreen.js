@@ -4,8 +4,8 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  SafeAreaView,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../context/ThemeContext';
 import { useHabits } from '../context/HabitContext';
@@ -31,7 +31,7 @@ export default function ProgressScreen({ navigation }) {
   const recordedDaysCount = Object.keys(stats.dateCompletionMap || {}).length;
 
   return (
-    <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]}>
+    <SafeAreaView edges={['top']} style={[styles.safeArea, { backgroundColor: colors.background }]}>
       <Header
         title="Analytics"
         subtitle="Insights & performance trends"

@@ -5,9 +5,10 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  SafeAreaView,
   RefreshControl,
+  Platform,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../context/ThemeContext';
 import { useHabits } from '../context/HabitContext';
@@ -73,7 +74,7 @@ export default function DashboardScreen({ navigation }) {
   };
 
   return (
-    <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]}>
+    <SafeAreaView edges={['top']} style={[styles.safeArea, { backgroundColor: colors.background }]}>
       {/* Top Bar */}
       <View style={[styles.topBar, { borderBottomColor: colors.borderLight }]}>
         <View style={{ flex: 1 }}>
