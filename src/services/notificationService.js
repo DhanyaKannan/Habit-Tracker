@@ -1,22 +1,26 @@
-import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
 
-// Configure notification presentation when app is in foreground
+let Notifications = null;
 try {
-  Notifications.setNotificationHandler({
-    handleNotification: async () => ({
-      shouldShowAlert: true,
-      shouldPlaySound: true,
-      shouldSetBadge: true,
-    }),
-  });
+  Notifications = require('expo-notifications');
+  if (Notifications && typeof Notifications.setNotificationHandler === 'function') {
+    Notifications.setNotificationHandler({
+      handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: true,
+        shouldSetBadge: true,
+      }),
+    });
+  }
 } catch (err) {
-  console.warn('Notification handler init warning:', err);
+  console.log('Notifications module not active in this runtime:', err.message);
+  Notifications = null;
 }
 
 const HABIT_CHANNEL_ID = 'habitflow-reminders';
 
 export async function setupNotificationChannels() {
+  if (!Notifications) return;
   if (Platform.OS === 'android') {
     try {
       await Notifications.setNotificationChannelAsync(HABIT_CHANNEL_ID, {
@@ -35,6 +39,7 @@ export async function setupNotificationChannels() {
 }
 
 export async function requestNotificationPermissions() {
+  if (!Notifications) return false;
   try {
     const { status: existingStatus } = await Notifications.getPermissionsAsync();
     let finalStatus = existingStatus;
@@ -55,7 +60,7 @@ export async function requestNotificationPermissions() {
  * @returns {Promise<string|null>} notificationId
  */
 export async function scheduleHabitReminder(habit) {
-  if (!habit.reminder_time || !habit.reminder_enabled) {
+  if (!Notifications || !habit.reminder_time || !habit.reminder_enabled) {
     return null;
   }
 
@@ -99,7 +104,7 @@ export async function scheduleHabitReminder(habit) {
 }
 
 export async function cancelHabitReminder(notificationId) {
-  if (!notificationId) return;
+  if (!Notifications || !notificationId) return;
   try {
     await Notifications.cancelScheduledNotificationAsync(notificationId);
   } catch (err) {
@@ -108,6 +113,7 @@ export async function cancelHabitReminder(notificationId) {
 }
 
 export async function sendInstantTestNotification() {
+  if (!Notifications) return false;
   try {
     const hasPermission = await requestNotificationPermissions();
     if (!hasPermission) return false;
@@ -132,4 +138,3 @@ export async function sendInstantTestNotification() {
     return false;
   }
 }
-

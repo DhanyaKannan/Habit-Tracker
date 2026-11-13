@@ -1,8 +1,26 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import * as Haptics from 'expo-haptics';
 import * as FileSystem from 'expo-file-system';
-import * as Sharing from 'expo-sharing';
-import * as DocumentPicker from 'expo-document-picker';
+
+let Haptics = null;
+try {
+  Haptics = require('expo-haptics');
+} catch (e) {
+  Haptics = null;
+}
+
+let Sharing = null;
+try {
+  Sharing = require('expo-sharing');
+} catch (e) {
+  Sharing = null;
+}
+
+let DocumentPicker = null;
+try {
+  DocumentPicker = require('expo-document-picker');
+} catch (e) {
+  DocumentPicker = null;
+}
 import {
   initDatabase,
   getAllHabits,
@@ -133,7 +151,9 @@ export function HabitProvider({ children }) {
   const toggleHabitCompletion = useCallback(async (habitId, targetDate = todayStr) => {
     try {
       try {
-        await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+        if (Haptics?.impactAsync) {
+          await Haptics.impactAsync(Haptics.ImpactFeedbackStyle?.Light);
+        }
       } catch (_) {}
 
       const isForToday = targetDate === todayStr;
@@ -285,8 +305,8 @@ export function HabitProvider({ children }) {
         encoding: FileSystem.EncodingType.UTF8,
       });
 
-      const isShareAvailable = await Sharing.isAvailableAsync();
-      if (isShareAvailable) {
+      const isShareAvailable = Sharing ? await Sharing.isAvailableAsync() : false;
+      if (isShareAvailable && Sharing?.shareAsync) {
         await Sharing.shareAsync(fileUri, {
           mimeType: 'application/json',
           dialogTitle: 'Export HabitFlow Data',
@@ -305,6 +325,10 @@ export function HabitProvider({ children }) {
   // Import JSON backup from DocumentPicker
   const importBackup = useCallback(async () => {
     try {
+      if (!DocumentPicker || !DocumentPicker.getDocumentAsync) {
+        throw new Error('Document Picker is only available in a native build or supported client.');
+      }
+
       const result = await DocumentPicker.getDocumentAsync({
         type: ['application/json', '*/*'],
         copyToCacheDirectory: true,
