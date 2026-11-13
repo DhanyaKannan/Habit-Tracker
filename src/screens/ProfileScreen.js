@@ -15,7 +15,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../context/ThemeContext';
 import { useHabits } from '../context/HabitContext';
 import { AVATAR_OPTIONS } from '../constants/theme';
-import { sendInstantTestNotification } from '../services/notificationService';
 import Header from '../components/common/Header';
 import Card from '../components/common/Card';
 import ConfirmModal from '../components/common/ConfirmModal';
@@ -46,21 +45,6 @@ export default function ProfileScreen({ navigation }) {
     });
     setIsEditingProfile(false);
     Alert.alert('Profile Updated', 'Your profile details have been saved.');
-  };
-
-  const handleTestNotification = async () => {
-    const success = await sendInstantTestNotification();
-    if (success) {
-      Alert.alert(
-        'Reminder Scheduled',
-        'A local reminder will trigger in 2 seconds. You can close or background the app to view the notification banner.'
-      );
-    } else {
-      Alert.alert(
-        'Notification Disabled',
-        'Please check device settings to ensure notification permissions are granted.'
-      );
-    }
   };
 
   const handleConfirmReset = async () => {
@@ -189,27 +173,6 @@ export default function ProfileScreen({ navigation }) {
                 thumbColor={userProfile.notificationsEnabled ? colors.lavender : '#f4f3f4'}
               />
             </View>
-
-            <View style={[styles.divider, { backgroundColor: colors.borderLight }]} />
-
-            <TouchableOpacity
-              style={styles.actionRow}
-              onPress={handleTestNotification}
-              activeOpacity={0.7}
-            >
-              <View style={styles.rowLeft}>
-                <Ionicons
-                  name="play-circle-outline"
-                  size={20}
-                  color={colors.sage}
-                  style={{ marginRight: 12 }}
-                />
-                <Text style={[styles.itemTitle, { color: colors.textPrimary }]}>
-                  Test Local Reminder Now
-                </Text>
-              </View>
-              <Ionicons name="chevron-forward" size={18} color={colors.textMuted} />
-            </TouchableOpacity>
           </Card>
         </View>
 
