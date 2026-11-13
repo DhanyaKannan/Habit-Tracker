@@ -9,6 +9,8 @@ import {
   Switch,
   Alert,
   Modal,
+  Platform,
+  StatusBar,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -328,6 +330,7 @@ export default function ProfileScreen({ navigation }) {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
+    paddingTop: Platform.OS === 'android' ? (StatusBar.currentHeight ? 20 : 28) : 0,
   },
   container: {
     flex: 1,
