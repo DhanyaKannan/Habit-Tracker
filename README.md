@@ -104,34 +104,46 @@ npx expo start
 
 ---
 
-## 📦 How to Build the Standalone Android APK
+## 📦 How to Build the Android App Bundle (.aab) for Google Play
 
-HabitFlow is pre-configured with `eas.json` to generate an installable standalone `.apk` directly (not an `.aab`).
+HabitFlow is pre-configured with `eas.json` to generate production-ready **`.aab` (Android App Bundle)** files, which is the required format for publishing to the Google Play Store.
 
 ### Step 1: Install & Authenticate EAS CLI
 ```bash
-# Log in to your free Expo account
+# Log in to your Expo account
 npx eas-cli login
 ```
 
-### Step 2: Configure EAS Project (First time only)
+### Step 2: Trigger the Android App Bundle (.aab) Build
+Run either of the following commands:
+
 ```bash
-npx eas-cli project:init
+# Using npm script:
+npm run build:aab
+
+# Or using EAS CLI directly:
+npx eas-cli build --platform android --profile production
 ```
 
-### Step 3: Trigger the Android APK Build
-Run the following command to build the standalone `.apk` using EAS cloud build:
+> **Why `--profile production`?**  
+> In `eas.json`, the `production` profile sets `"buildType": "app-bundle"`, which compiles your app into a signed `.aab` ready for Google Play Console upload.
+
+### Alternative: Local AAB Build (using your machine's Android SDK & Java)
+```bash
+npx eas-cli build --platform android --profile production --local
+```
+
+---
+
+## 📲 How to Build a Standalone Test APK (.apk)
+
+If you want to directly sideload and test on an Android phone without Google Play:
 
 ```bash
+# Cloud EAS APK build:
+npm run build:apk
+# or
 npx eas-cli build --platform android --profile preview
-```
-
-> **Why `--profile preview`?**  
-> In `eas.json`, the `preview` profile has `"buildType": "apk"`. EAS Build will compile the native Android code and output an installable `.apk` file instead of an App Bundle.
-
-### Alternative: Local APK Build (if Android SDK & Java are installed locally)
-```bash
-npx eas-cli build --platform android --profile preview --local
 ```
 
 ---
